@@ -6,7 +6,7 @@ namespace App\models\entities;
 use DateTime;
 use Exception;
 
-class User
+class Users
 {
   private ?int $id = null;
   private string $username = "";

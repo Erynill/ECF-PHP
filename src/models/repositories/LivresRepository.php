@@ -3,7 +3,7 @@ declare (strict_types = 1);
 
 namespace App\models\repositories;
 
-use App\models\entities\Livre;
+use App\models\entities\Livres;
 use Exception;
 use PDO;
 
@@ -11,7 +11,7 @@ class LivreRepository extends BaseRepository
 {
   public function create(object $data): bool
   {
-    if (!$data instanceof Livre) {
+    if (!$data instanceof Livres) {
       throw new Exception("L'objet donné doit être de la classe Livre");
     } else {
       $query = "INSERT INTO livres (titre, auteur_id, categorie_id, annee_publication, isbn, disponible, synopsis, like)
@@ -30,7 +30,7 @@ class LivreRepository extends BaseRepository
     $stmt = $this->db->prepare($query);
     $stmt->execute();
 
-    return $stmt->fetchAll(PDO::FETCH_CLASS | PDO::FETCH_PROPS_LATE, Livre::class);
+    return $stmt->fetchAll(PDO::FETCH_CLASS | PDO::FETCH_PROPS_LATE, Livres::class);
   }
 
   public function getById(int $id): ?object
@@ -40,12 +40,12 @@ class LivreRepository extends BaseRepository
     $param = [":id" => $id];
     $stmt->execute($param);
 
-    return $stmt->fetchObject(Livre::class);
+    return $stmt->fetchObject(Livres::class);
   }
 
   public function updateById(object $data): bool
   {
-    if (!$data instanceof Livre) {
+    if (!$data instanceof Livres) {
       throw new Exception("L'objet doit être de la classe Livre");
     } else {
       $query = "UPDATE livres
