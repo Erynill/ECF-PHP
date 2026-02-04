@@ -21,7 +21,7 @@ abstract class BaseRepository
 
   abstract public function getById(int $id): ?object;
 
-  abstract public function updateById(int $id): bool;
+  abstract public function updateById(object $data): bool;
 
   abstract public function deleteById(int $id): bool;
 }

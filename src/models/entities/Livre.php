@@ -11,11 +11,11 @@ class Livre
   private string $titre = "";
   private ?int $auteur_id = null;
   private ?int $categorie_id = null;
-  private int $annee_publication = 0;
-  private string $isbn = "";
-  private int $disponible = 0;
-  private string $synopsis = "";
-  private bool $like = false;
+  private ?int $annee_publication = null;
+  private ?string $isbn = null;
+  private ?int $disponible = null;
+  private ?string $synopsis = null;
+  private ?bool $like = null;
 
   /**
    * Get the value of id
