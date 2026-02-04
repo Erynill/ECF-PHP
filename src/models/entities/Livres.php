@@ -5,7 +5,7 @@ namespace App\models\entities;
 
 use Exception;
 
-class Livre
+class Livres
 {
   private ?int $id = null;
   private string $titre = "";
