@@ -15,13 +15,76 @@ abstract class BaseRepository
     $this->db = Database::getInstance()->getConnexion();
   }
 
-  abstract public function create(object $data): bool;
+  public function createBase(string $table, object $data): bool
+  {
+    $arrayObject = $data->getProps();
+    $arrayObject = array_filter($arrayObject, fn($value) => !is_null($value) && $value !== "");
+    $column = implode(", ", array_keys($arrayObject));
+    $query = "INSERT INTO $table ($column) VALUES (";
+    foreach ($arrayObject as $key => $value) {
+      $query .= ":$key";
+      if (array_key_last($arrayObject) !== $key) {
+        $query .= ", ";
+      }
+    }
+    $query .= ")";
 
-  abstract public function getAll(): array;
+    $stmt = $this->db->prepare($query);
+    foreach ($arrayObject as $key => $value) {
+      $stmt->bindValue($key, $value);
+    }
+    return $stmt->execute();
+  }
 
-  abstract public function getById(int $id): ?object;
+  public function getAllBase(string $table, string $class): array
+  {
+    $query = "SELECT * FROM $table";
+    $stmt = $this->db->prepare($query);
+    $stmt->execute();
 
-  abstract public function updateById(object $data): bool;
+    var_dump(ucfirst($table));
+    return $stmt->fetchAll(PDO::FETCH_CLASS | PDO::FETCH_PROPS_LATE, $class);
+  }
 
-  abstract public function deleteById(int $id): bool;
+  public function getByIdBase(string $table, string $class, int $id): ?object
+  {
+    $query = "SELECT * FROM $table WHERE id = :id";
+    $stmt = $this->db->prepare($query);
+    $param = [":id" => $id];
+    $stmt->execute($param);
+
+    return $stmt->fetchObject($class);
+  }
+
+  public function updateByIdBase(string $table, object $data): bool
+  {
+    $query = "UPDATE $table SET ";
+    $arrayObject = $data->getProps();
+    $arrayObject = array_filter($arrayObject, fn($value) => !is_null($value) && $value !== "");
+    foreach ($arrayObject as $key => $value) {
+      $query .= "$key = :$key";
+      if (array_key_last($arrayObject) !== $key) {
+        $query .= ", ";
+      }
+    }
+    $query .= " WHERE id = :id";
+
+    $stmt = $this->db->prepare($query);
+
+    foreach ($arrayObject as $key => $value) {
+      $stmt->bindValue($key, $value);
+    }
+    $stmt->bindValue("id", $arrayObject["id"]);
+
+    return $stmt->execute();
+  }
+
+  public function deleteByIdBase(string $table, int $id): bool
+  {
+    $query = "DELETE FROM $table WHERE id = :id";
+    $stmt = $this->db->prepare($query);
+    $param = [":id" => $id];
+
+    return $stmt->execute($param);
+  }
 }
