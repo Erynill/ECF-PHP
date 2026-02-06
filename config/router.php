@@ -4,6 +4,7 @@ declare (strict_types = 1);
 $router = new AltoRouter();
 
 $router->map("GET", "/", "App\\controllers\\HomeController#index");
+$router->map("GET", "/livres", "App\\controllers\\LivresController#index");
 
 $match = $router->match();
 

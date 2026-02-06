@@ -5,7 +5,7 @@ namespace App\models\repositories;
 
 use App\models\entities\Livres;
 
-class LivreRepository extends BaseRepository
+class LivresRepository extends BaseRepository
 {
   public function create(Livres $data): bool
   {

@@ -1,9 +1,12 @@
 {% extends "base.html.twig" %}
 
-{% block title %}
-  Home
+{% block title %}Home{% endblock %}
+
+{% block stylesheet %}
+  <link rel="stylesheet" href="./src/css/output.css">
 {% endblock %}
 
 {% block body %}
-  <h1>Home</h1>
+  {{ include("components/navbar.html.twig") }}
+  <h1 class="text-center mt-96 text-6xl font-bold">Bienvenue dans Le Sanctuaire</h1>
 {% endblock %}

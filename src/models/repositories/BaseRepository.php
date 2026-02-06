@@ -15,7 +15,7 @@ abstract class BaseRepository
     $this->db = Database::getInstance()->getConnexion();
   }
 
-  public function createBase(string $table, object $data): bool
+  protected function createBase(string $table, object $data): bool
   {
     $arrayObject = $data->getProps();
     $arrayObject = array_filter($arrayObject, fn($value) => !is_null($value) && $value !== "");
@@ -36,7 +36,7 @@ abstract class BaseRepository
     return $stmt->execute();
   }
 
-  public function getAllBase(string $table, string $class): array
+  protected function getAllBase(string $table, string $class): array
   {
     $query = "SELECT * FROM $table";
     $stmt = $this->db->prepare($query);
@@ -46,7 +46,7 @@ abstract class BaseRepository
     return $stmt->fetchAll(PDO::FETCH_CLASS | PDO::FETCH_PROPS_LATE, $class);
   }
 
-  public function getByIdBase(string $table, string $class, int $id): ?object
+  protected function getByIdBase(string $table, string $class, int $id): ?object
   {
     $query = "SELECT * FROM $table WHERE id = :id";
     $stmt = $this->db->prepare($query);
@@ -56,7 +56,7 @@ abstract class BaseRepository
     return $stmt->fetchObject($class);
   }
 
-  public function updateByIdBase(string $table, object $data): bool
+  protected function updateByIdBase(string $table, object $data): bool
   {
     $query = "UPDATE $table SET ";
     $arrayObject = $data->getProps();
@@ -79,7 +79,7 @@ abstract class BaseRepository
     return $stmt->execute();
   }
 
-  public function deleteByIdBase(string $table, int $id): bool
+  protected function deleteByIdBase(string $table, int $id): bool
   {
     $query = "DELETE FROM $table WHERE id = :id";
     $stmt = $this->db->prepare($query);
