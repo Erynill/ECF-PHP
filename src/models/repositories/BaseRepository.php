@@ -42,7 +42,6 @@ abstract class BaseRepository
     $stmt = $this->db->prepare($query);
     $stmt->execute();
 
-    var_dump(ucfirst($table));
     return $stmt->fetchAll(PDO::FETCH_CLASS | PDO::FETCH_PROPS_LATE, $class);
   }
 
