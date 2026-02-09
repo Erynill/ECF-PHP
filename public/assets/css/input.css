@@ -1,0 +1,14 @@
+@import "tailwindcss";
+
+.card {
+  @apply flex flex-col gap-4 h-full bg-white/80 rounded-xl p-3 shadow-xl shadow-emerald-700/40 cursor-pointer transition
+        ease-in-out duration-200 hover:scale-105 hover:shadow-emerald-700/60 hover:ring-1 ring-emerald-700;
+}
+
+.card > h2 {
+  @apply text-2xl font-bold;
+}
+
+.card > p {
+  @apply text-lg;
+}

@@ -35,15 +35,15 @@ class LivresRepository extends BaseRepository
     return $this->deleteByIdBase("livres", $id);
   }
 
-  public function getOfLivreViewByPage(int $page): array
+  public function getAllOfLivreViewByPage(int $page, int $nbrArticle): array
   {
-    $query = "SELECT l.id, annee_publication, `like`, synopsis, titre, auteur_id, a.nom AS nom_auteurs, a.prenom, categorie_id, c.nom AS nom_categories
+    $query = "SELECT l.id, annee_publication, `like`, synopsis, auteur_id, a.nom AS nom_auteurs, a.prenom, categorie_id, c.nom AS nom_categories
               FROM livres AS l
               LEFT JOIN auteurs AS a
               ON l.auteur_id = a.id
               LEFT JOIN categories AS c
               ON l.categorie_id = c.id
-              LIMIT 12
+              LIMIT $nbrArticle
               OFFSET $page";
     $stmt = $this->db->prepare($query);
     $stmt->execute();
@@ -52,26 +52,156 @@ class LivresRepository extends BaseRepository
     $i = 0;
     while (($row = $stmt->fetch(PDO::FETCH_ASSOC)) !== false) {
       $livre = new Livres();
-      $livre->setId($row["id"]);
-      $livre->setAnnee_publication($row["annee_publication"]);
-      $livre->setLike(boolval($row["like"]));
-      $livre->setSynopsis($row["synopsis"]);
-      $livre->setTitre($row["titre"]);
-      $livre->setAuteur_id($row["auteur_id"]);
-      $livre->setCategorie_id($row["categorie_id"]);
+      if (isset($row["id"])) {
+        $livre->setId($row["id"]);
+      }
+
+      if (isset($row["annee_publication"])) {
+        $livre->setAnnee_publication($row["annee_publication"]);
+      }
+
+      if (isset($row["like"])) {
+        $livre->setLike(boolval($row["like"]));
+      }
+
+      if (isset($row["synopsis"])) {
+        $livre->setSynopsis($row["synopsis"]);
+      }
+
+      if (isset($row["auteur_id"])) {
+        $livre->setAuteur_id($row["auteur_id"]);
+      }
+
+      if (isset($row["categorie_id"])) {
+        $livre->setCategorie_id($row["categorie_id"]);
+      }
+
       $arrayResult[$i][] = $livre;
+
       $auteur = new Auteurs();
-      $auteur->setId($row["auteur_id"]);
-      $auteur->setNom($row["nom_auteurs"]);
-      $auteur->setPrenom($row["prenom"]);
+      if (isset($row["auteur_id"])) {
+        $auteur->setId($row["auteur_id"]);
+      }
+
+      if (isset($row["nom_auteurs"])) {
+        $auteur->setNom($row["nom_auteurs"]);
+      }
+
+      if (isset($row["prenom"])) {
+        $auteur->setPrenom($row["prenom"]);
+      }
+
       $arrayResult[$i][] = $auteur;
+
       $categorie = new Categories();
-      $categorie->setId($row["categorie_id"]);
-      $categorie->setNom($row["nom_categories"]);
+      if (isset($row["categorie_id"])) {
+        $categorie->setId($row["categorie_id"]);
+      }
+
+      if (isset($row["nom_categories"])) {
+        $categorie->setNom($row["nom_categories"]);
+      }
+
       $arrayResult[$i][] = $categorie;
+
       $i++;
     }
 
     return $arrayResult;
+  }
+
+  public function getOfLivreViewById(int $id): array
+  {
+    $query = "SELECT l.id, annee_publication, `like`, synopsis, titre, isbn, disponible, auteur_id, a.nom AS nom_auteurs, a.prenom, categorie_id, c.nom AS nom_categories
+              FROM livres AS l
+              LEFT JOIN auteurs AS a
+              ON l.auteur_id = a.id
+              LEFT JOIN categories AS c
+              ON l.categorie_id = c.id
+              WHERE l.id = $id";
+    $stmt = $this->db->prepare($query);
+    $stmt->execute();
+
+    $arrayResult = [];
+    $i = 0;
+    while (($row = $stmt->fetch(PDO::FETCH_ASSOC)) !== false) {
+      $livre = new Livres();
+      if (isset($row["id"])) {
+        $livre->setId($row["id"]);
+      }
+
+      if (isset($row["annee_publication"])) {
+        $livre->setAnnee_publication($row["annee_publication"]);
+      }
+
+      if (isset($row["like"])) {
+        $livre->setLike(boolval($row["like"]));
+      }
+
+      if (isset($row["synopsis"])) {
+        $livre->setSynopsis($row["synopsis"]);
+      }
+
+      if (isset($row["titre"])) {
+        $livre->setTitre($row["titre"]);
+      }
+
+      if (isset($row["isbn"])) {
+        $livre->setIsbn($row["isbn"]);
+      }
+
+      if (isset($row["disponible"])) {
+        $livre->setDisponible($row["disponible"]);
+      }
+
+      if (isset($row["auteur_id"])) {
+        $livre->setAuteur_id($row["auteur_id"]);
+      }
+
+      if (isset($row["categorie_id"])) {
+        $livre->setCategorie_id($row["categorie_id"]);
+      }
+
+      $arrayResult[$i][] = $livre;
+
+      $auteur = new Auteurs();
+      if (isset($row["auteur_id"])) {
+        $auteur->setId($row["auteur_id"]);
+      }
+
+      if (isset($row["nom_auteurs"])) {
+        $auteur->setNom($row["nom_auteurs"]);
+      }
+
+      if (isset($row["prenom"])) {
+        $auteur->setPrenom($row["prenom"]);
+      }
+
+      $arrayResult[$i][] = $auteur;
+
+      $categorie = new Categories();
+      if (isset($row["categorie_id"])) {
+        $categorie->setId($row["categorie_id"]);
+      }
+
+      if (isset($row["nom_categories"])) {
+        $categorie->setNom($row["nom_categories"]);
+      }
+
+      $arrayResult[$i][] = $categorie;
+
+      $i++;
+    }
+
+    return $arrayResult;
+  }
+
+  public function getCount(): array
+  {
+    $query = "SELECT COUNT(id) FROM livres";
+    $stmt = $this->db->prepare($query);
+    $stmt->execute();
+
+    return $stmt->fetch(PDO::FETCH_ASSOC);
   }
 }

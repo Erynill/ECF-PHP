@@ -3,40 +3,36 @@
 {% block title %}Livres{% endblock %}
 
 {% block stylesheet %}
-  <link rel="stylesheet" href="./src/css/output.css">
+  <link rel="stylesheet" href="/assets/css/output.css">
 {% endblock %}
 
 {% block body %}
   {{ include("components/navbar.html.twig") }}
   <main class="w-8/10 m-auto grid grid-cols-3 my-10 gap-20">
-    <article class="card">
-      Lorem ipsum dolor sit amet, consectetur adipisicing elit. Est dolore impedit ex quisquam, dolorem magni accusamus. Ea
-      placeat, in dicta debitis labore similique ex ipsam magnam impedit eum, eos deserunt.
-      <div class="flex">
-        <h3 class="text-2xl font-semibold">Auteur</h3>
-        <span class="ml-auto text-xl italic">Année</span>
-      </div>
-      <span class="italic">Catégorie</span>
-    </article>
-    <article class="card">
-      Lorem ipsum dolor sit amet, consectetur adipisicing elit. Est dolore impedit ex quisquam, dolorem magni accusamus. Ea
-      placeat, in dicta debitis labore similique ex ipsam magnam impedit eum, eos deserunt.
-    </article>
-    <article class="card">
-      Lorem ipsum dolor sit amet, consectetur adipisicing elit. Est dolore impedit ex quisquam, dolorem magni accusamus. Ea
-      placeat, in dicta debitis labore similique ex ipsam magnam impedit eum, eos deserunt.
-    </article>
-    <article class="card">
-      Lorem ipsum dolor sit amet, consectetur adipisicing elit. Est dolore impedit ex quisquam, dolorem magni accusamus. Ea
-      placeat, in dicta debitis labore similique ex ipsam magnam impedit eum, eos deserunt.
-    </article>
-    <article class="card">
-      Lorem ipsum dolor sit amet, consectetur adipisicing elit. Est dolore impedit ex quisquam, dolorem magni accusamus. Ea
-      placeat, in dicta debitis labore similique ex ipsam magnam impedit eum, eos deserunt.
-    </article>
-    <article class="card">
-      Lorem ipsum dolor sit amet, consectetur adipisicing elit. Est dolore impedit ex quisquam, dolorem magni accusamus. Ea
-      placeat, in dicta debitis labore similique ex ipsam magnam impedit eum, eos deserunt.
-    </article>
+    {% for book in data %}
+      <a href="/livres/{{book.0.id}}">
+        <article class="card">
+          {{ book.0.synopsis|raw }}
+          <div class="flex mt-auto">
+            <h3 class="text-2xl font-semibold">
+              {{book.1.prenom}}
+              {{book.1.nom}}
+            </h3>
+            <span class="ml-auto text-xl italic">
+              {{book.0.annee_publication}}
+            </span>
+          </div>
+          <span class="italic">
+            {{book.2.nom}}
+          </span>
+        </article>
+      </a>
+    {% endfor %}
+
   </main>
+  <div>
+    {% for i in 1..page %}
+      <a href="/livres?page={{i}}">{{i}}</a>
+    {% endfor %}
+  </div>
 {% endblock %}

@@ -8,14 +8,31 @@ use Michelf\MarkdownExtra;
 
 class LivresController extends BaseController
 {
-  public function getLivres(int $page): array
-  {
-    $livresRepo = new LivresRepository();
+  const NBR_ARTICLES = 12;
 
-    return $livresRepo->getOfLivreViewByPage($page);
+  protected static function getRepo(): LivresRepository
+  {
+    return new LivresRepository;
   }
 
-  public function processData(array $data): array
+  public function getAllLivres(int $page): array
+  {
+    return LivresController::getRepo()->getAllOfLivreViewByPage(($page - 1) * 12, LivresController::NBR_ARTICLES);
+  }
+
+  public function getLivres(int $id): array
+  {
+    return LivresController::getRepo()->getOfLivreViewById($id);
+  }
+
+  public function getCount()
+  {
+    $count = LivresController::getRepo()->getCount();
+
+    return $count["COUNT(id)"];
+  }
+
+  public function transformMarkdownToHtml(array $data): array
   {
     foreach ($data as $value) {
       $value[0]->setSynopsis(MarkdownExtra::defaultTransform($value[0]->getSynopsis()));
@@ -24,15 +41,35 @@ class LivresController extends BaseController
     return $data;
   }
 
-  public function index(): void
+  public function pagination(int $total): float
   {
-    $data = $this->getLivres(1);
-    $data = $this->processData($data);
-    echo $this->twig->render("livres/index.html.twig", [
+    $totalPages = ceil($total / LivresController::NBR_ARTICLES);
+
+    return $totalPages;
+  }
+
+  public function livres(string $id): void
+  {
+    $data = $this->getLivres(intval($id));
+    $data = $this->transformMarkdownToHtml($data);
+
+    echo $this->twig->render("livres/livres.html.twig", [
       "data" => $data,
     ]);
-    echo "<pre>";
-    var_dump($data);
-    echo "</pre>";
+  }
+
+  public function index(): void
+  {
+    isset($_GET["page"]) ? $currentPage = $_GET["page"] : $currentPage = 1;
+
+    $data = $this->getAllLivres(intval($currentPage));
+    $data = $this->transformMarkdownToHtml($data);
+
+    $totalPages = $this->pagination($this->getCount());
+
+    echo $this->twig->render("livres/index.html.twig", [
+      "data" => $data,
+      "page" => $totalPages,
+    ]);
   }
 }
