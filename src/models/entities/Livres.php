@@ -13,7 +13,7 @@ class Livres
   private ?int $categorie_id = null;
   private ?int $annee_publication = null;
   private ?string $isbn = null;
-  private ?int $disponible = null;
+  private ?bool $disponible = null;
   private ?string $synopsis = null;
   private ?bool $like = null;
 
@@ -148,7 +148,7 @@ class Livres
   /**
    * Get the value of disponible
    */
-  public function getDisponible(): int
+  public function getDisponible(): bool
   {
     return $this->disponible;
   }
@@ -158,13 +158,9 @@ class Livres
    *
    * @return  self
    */
-  public function setDisponible(int $disponible): self
+  public function setDisponible(bool $disponible): self
   {
-    if ($disponible < 0 || $disponible > 127) {
-      throw new Exception("Disponible doit être entre 0 et 127");
-    } else {
-      $this->disponible = $disponible;
-    }
+    $this->disponible = $disponible;
 
     return $this;
   }

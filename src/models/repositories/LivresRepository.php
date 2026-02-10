@@ -76,7 +76,7 @@ class LivresRepository extends BaseRepository
         $livre->setCategorie_id($row["categorie_id"]);
       }
 
-      $arrayResult[$i][] = $livre;
+      $arrayResult[$i]["livres"] = $livre;
 
       $auteur = new Auteurs();
       if (isset($row["auteur_id"])) {
@@ -91,7 +91,7 @@ class LivresRepository extends BaseRepository
         $auteur->setPrenom($row["prenom"]);
       }
 
-      $arrayResult[$i][] = $auteur;
+      $arrayResult[$i]["auteurs"] = $auteur;
 
       $categorie = new Categories();
       if (isset($row["categorie_id"])) {
@@ -102,7 +102,7 @@ class LivresRepository extends BaseRepository
         $categorie->setNom($row["nom_categories"]);
       }
 
-      $arrayResult[$i][] = $categorie;
+      $arrayResult[$i]["categories"] = $categorie;
 
       $i++;
     }
@@ -123,7 +123,6 @@ class LivresRepository extends BaseRepository
     $stmt->execute();
 
     $arrayResult = [];
-    $i = 0;
     while (($row = $stmt->fetch(PDO::FETCH_ASSOC)) !== false) {
       $livre = new Livres();
       if (isset($row["id"])) {
@@ -151,7 +150,7 @@ class LivresRepository extends BaseRepository
       }
 
       if (isset($row["disponible"])) {
-        $livre->setDisponible($row["disponible"]);
+        $livre->setDisponible(boolval($row["disponible"]));
       }
 
       if (isset($row["auteur_id"])) {
@@ -162,7 +161,7 @@ class LivresRepository extends BaseRepository
         $livre->setCategorie_id($row["categorie_id"]);
       }
 
-      $arrayResult[$i][] = $livre;
+      $arrayResult["livres"] = $livre;
 
       $auteur = new Auteurs();
       if (isset($row["auteur_id"])) {
@@ -177,7 +176,7 @@ class LivresRepository extends BaseRepository
         $auteur->setPrenom($row["prenom"]);
       }
 
-      $arrayResult[$i][] = $auteur;
+      $arrayResult["auteurs"] = $auteur;
 
       $categorie = new Categories();
       if (isset($row["categorie_id"])) {
@@ -188,9 +187,7 @@ class LivresRepository extends BaseRepository
         $categorie->setNom($row["nom_categories"]);
       }
 
-      $arrayResult[$i][] = $categorie;
-
-      $i++;
+      $arrayResult["categories"] = $categorie;
     }
 
     return $arrayResult;

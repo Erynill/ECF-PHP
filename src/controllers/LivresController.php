@@ -3,6 +3,7 @@ declare (strict_types = 1);
 
 namespace App\controllers;
 
+use App\models\entities\Livres;
 use App\models\repositories\LivresRepository;
 use Michelf\MarkdownExtra;
 
@@ -32,11 +33,18 @@ class LivresController extends BaseController
     return $count["COUNT(id)"];
   }
 
-  public function transformMarkdownToHtml(array $data): array
+  public function processDataAllLivres(array $data): array
   {
     foreach ($data as $value) {
-      $value[0]->setSynopsis(MarkdownExtra::defaultTransform($value[0]->getSynopsis()));
+      $value["livres"]->setSynopsis(MarkdownExtra::defaultTransform($value["livres"]->getSynopsis()));
     }
+
+    return $data;
+  }
+
+  public function processDataOneLivres(array $data): array
+  {
+    $data["livres"]->setSynopsis(MarkdownExtra::defaultTransform($data["livres"]->getSynopsis()));
 
     return $data;
   }
@@ -48,14 +56,31 @@ class LivresController extends BaseController
     return $totalPages;
   }
 
+  public function modify(string $id): void
+  {
+    $data = $this->getLivres(intval($id));
+
+    if (isset($_POST["titre"])) {
+      var_dump($_POST);
+    }
+
+    echo $this->twig->render("livres/modify.html.twig", [
+      "data" => $data,
+    ]);
+  }
+
   public function livres(string $id): void
   {
     $data = $this->getLivres(intval($id));
-    $data = $this->transformMarkdownToHtml($data);
+    $data = $this->processDataOneLivres($data);
 
     echo $this->twig->render("livres/livres.html.twig", [
       "data" => $data,
     ]);
+
+    echo "<pre>";
+    var_dump($data);
+    echo "</pre";
   }
 
   public function index(): void
@@ -63,7 +88,7 @@ class LivresController extends BaseController
     isset($_GET["page"]) ? $currentPage = $_GET["page"] : $currentPage = 1;
 
     $data = $this->getAllLivres(intval($currentPage));
-    $data = $this->transformMarkdownToHtml($data);
+    $data = $this->processDataAllLivres($data);
 
     $totalPages = $this->pagination($this->getCount());
 

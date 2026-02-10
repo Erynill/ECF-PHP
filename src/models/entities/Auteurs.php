@@ -104,4 +104,13 @@ class Auteurs
   {
     return get_object_vars($this);
   }
+
+  public function checkAuteur(string $nom, string $prenom): bool
+  {
+    if ($nom === $this->getNom() && $prenom === $this->getPrenom()) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 }

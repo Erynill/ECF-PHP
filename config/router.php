@@ -10,6 +10,10 @@ $router->map("GET", "/livres/[i:id]", function ($id) {
   $obj = new App\controllers\LivresController;
   call_user_func([$obj, "livres"], $id);
 });
+$router->map("GET|POST", "/livres/[i:id]/modify", function ($id) {
+  $obj = new App\controllers\LivresController;
+  call_user_func([$obj, "modify"], $id);
+});
 
 $match = $router->match();
 

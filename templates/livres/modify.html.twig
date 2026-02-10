@@ -1,0 +1,122 @@
+{% extends "base.html.twig" %}
+
+{% block title %}
+	Modifier -
+	{{data.livres.titre}}
+{% endblock %}
+
+{% block stylesheet %}
+	<link
+		rel="stylesheet"
+		href="/assets/css/output.css">
+{% endblock %}
+
+{% block body %}
+	{% include "components/navbar.html.twig" %}
+	<main
+		class="w-8/10 m-auto mt-5 bg-white rounded-2xl shadow-2xl shadow-emerald-700 p-5 relative">
+		<h2
+			class="text-center text-5xl font-bold mb-8">
+			Modifier
+			{{data.livres.titre}}
+		</h2>
+		<form
+			action="/livres/{{data.livres.id}}/modify"
+			method="post"
+			class="bg-white flex flex-col w-2/3 m-auto gap-5">
+			<div
+				class="flex flex-col gap-1">
+				<label
+					for="titre"
+					class="text-2xl">
+					Titre
+				</label>
+				<input
+					type="text"
+					id="titre"
+					name="titre"
+					class="input"
+					value="{{data.livres.titre}}">
+			</div>
+			<div
+				class="flex flex-col gap-1">
+				<label
+					for="annee_publication"
+					class="text-2xl">
+					Année de publication
+				</label>
+				<input
+					type="number"
+					id="annee_publication"
+					name="annee_publication"
+					class="input"
+					value="{{data.livres.annee_publication}}">
+			</div>
+			<div
+				class="flex flex-col gap-1">
+				<label
+					for="isbn"
+					class="text-2xl">
+					ISBN
+				</label>
+				<input
+					type="text"
+					id="isbn"
+					name="isbn"
+					class="input"
+					value="{{data.livres.isbn}}">
+			</div>
+			<div
+				class="flex flex-col gap-1">
+				<span
+					class="text-2xl">Disponible :
+				</span>
+				<div>
+					<input
+						type="radio"
+						id="true"
+						name="disponible"
+						value="true"
+						class="ml-5"
+						{% if data.livres.disponible %} checked
+						{% endif %}>
+					<label
+						for="true"
+						class="text-2xl">
+						Oui
+					</label>
+					<input
+						type="radio"
+						id="false"
+						name="disponible"
+						value="false"
+						class="ml-5"
+						{% if not data.livres.disponible %} checked
+						{% endif %}>
+					<label
+						for="false"
+						class="text-2xl">
+						Non
+					</label>
+				</div>
+			</div>
+			<div
+				class="flex flex-col gap-1">
+				<label
+					for="synopsis"
+					class="text-2xl">
+					Synopsis
+				</label>
+				<textarea
+					name="synopsis"
+					id="synopsis"
+					class="input"></textarea>
+			</div>
+			<button
+				type="submit"
+				class="boutton text-3xl bg-amber-400 hover:bg-amber-500 absolute top-5 right-5">
+				Modifier
+			</button>
+		</form>
+	</main>
+{% endblock %}
