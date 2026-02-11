@@ -12,9 +12,9 @@ class AuteursRepository extends BaseRepository
     return $this->createBase("auteurs", $data);
   }
 
-  public function getAll(): array
+  public function getAll(?int $page = null, ?int $nbrArticle = null): array
   {
-    return $this->getAllBase("auteurs", Auteurs::class);
+    return $this->getAllBase("auteurs", Auteurs::class, $page, $nbrArticle);
   }
 
   public function getById(int $id): ?Auteurs
@@ -30,5 +30,10 @@ class AuteursRepository extends BaseRepository
   public function deleteById(int $id): bool
   {
     return $this->deleteByIdBase("auteurs", $id);
+  }
+
+  public function getCount(): array
+  {
+    return $this->getCountBase("auteurs");
   }
 }

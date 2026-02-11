@@ -12,9 +12,9 @@ class UsersRepository extends BaseRepository
     return $this->createBase("users", $data);
   }
 
-  public function getAll(): array
+  public function getAll(?int $page = null, ?int $nbrArticle = null): array
   {
-    return $this->getAllBase("users", Users::class);
+    return $this->getAllBase("users", Users::class, $page, $nbrArticle);
   }
 
   public function getById(int $id): ?Users
@@ -30,5 +30,10 @@ class UsersRepository extends BaseRepository
   public function deleteById(int $id): bool
   {
     return $this->deleteByIdBase("users", $id);
+  }
+
+  public function getCount(): array
+  {
+    return $this->getCountBase("users");
   }
 }

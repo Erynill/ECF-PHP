@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheet %}
+	<link
+		rel="stylesheet"
+		href="/assets/css/output.css"/>
+{% endblock %}
+
+{% block title %}
+	{{data.prenom}}
+	{{data.nom}}
+{% endblock %}
+
+{% block script %} <script src="/assets/js/libraries/sweetalert2.all.min.js"></script>
+	 <script type="module" src="/assets/js/auteurs.js"></script>
+{% endblock %}
+
+{% block body %}
+	{% include "components/navbar.html.twig" %}
+	<main
+		class="w-8/10 m-auto bg-white flex flex-col gap-7 p-5 rounded-2xl mt-10 shadow-2xl shadow-emerald-700 ring
+			ring-emerald-700/30 livre">
+		{{ data.biographie|raw }}
+		<div
+			class="flex justify-end text-2xl mt-5 gap-5">
+			<a
+				href="/auteurs/modify/{{data.id}}"
+				class="boutton bg-amber-400 hover:bg-amber-500">Modifier
+			</a>
+			<a
+				href="/auteurs/delete?id={{data.id}}"
+				id="supprBtn"
+				class="boutton bg-red-500 hover:bg-red-700"
+				data-id="{{data.id}}">Supprimer
+			</a>
+		</div>
+	</main>
+{% endblock %}

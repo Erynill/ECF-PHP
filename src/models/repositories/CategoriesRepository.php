@@ -12,9 +12,9 @@ class CategoriesRepository extends BaseRepository
     return $this->createBase("categories", $data);
   }
 
-  public function getAll(): array
+  public function getAll(?int $page = null, ?int $nbrArticle = null): array
   {
-    return $this->getAllBase("categories", Categories::class);
+    return $this->getAllBase("categories", Categories::class, $page, $nbrArticle);
   }
 
   public function getById($id): ?Categories
@@ -30,5 +30,10 @@ class CategoriesRepository extends BaseRepository
   public function deleteById(int $id): bool
   {
     return $this->deleteByIdBase("categories", $id);
+  }
+
+  public function getCount(): array
+  {
+    return $this->getCountBase("categories");
   }
 }

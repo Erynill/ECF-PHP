@@ -9,12 +9,23 @@ $router->map("GET", "/livres/[i:id]", function ($id) {
   $obj = new App\controllers\LivresController;
   call_user_func([$obj, "livres"], $id);
 });
-$router->map("GET|POST", "/livres/[i:id]/modify", function ($id) {
+$router->map("GET|POST", "/livres/modify/[i:id]", function ($id) {
   $obj = new App\controllers\LivresController;
   call_user_func([$obj, "modify"], $id);
 });
 $router->map("GET|POST", "/livres/add", "App\\controllers\\LivresController#add");
 $router->map("GET", "/livres/delete", "App\\controllers\\LivresController#delete");
+$router->map("GET", "/auteurs", "App\\controllers\\AuteursController#index");
+$router->map("GET", "/auteurs/[i:id]", function ($id) {
+  $obj = new App\controllers\AuteursController;
+  call_user_func([$obj, "auteurs"], $id);
+});
+$router->map("GET|POST", "/auteurs/modify/[i:id]", function ($id) {
+  $obj = new App\controllers\AuteursController;
+  call_user_func([$obj, "modify"], $id);
+});
+$router->map("GET|POST", "/auteurs/add", "App\\controllers\\AuteursController#add");
+$router->map("GET", "/auteurs/delete", "App\\controllers\\AuteursController#delete");
 
 $match = $router->match();
 

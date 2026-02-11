@@ -36,9 +36,13 @@ abstract class BaseRepository
     return $stmt->execute();
   }
 
-  protected function getAllBase(string $table, string $class): array
+  protected function getAllBase(string $table, string $class, ?int $page = null, ?int $nbrArticle = null): array
   {
     $query = "SELECT * FROM $table";
+    if (isset($page) && isset($nbrArticle)) {
+      $query .= " LIMIT $nbrArticle OFFSET $page";
+    }
+
     $stmt = $this->db->prepare($query);
     $stmt->execute();
 
@@ -85,5 +89,14 @@ abstract class BaseRepository
     $param = [":id" => $id];
 
     return $stmt->execute($param);
+  }
+
+  protected function getCountBase(string $table): array
+  {
+    $query = "SELECT COUNT(id) FROM $table";
+    $stmt = $this->db->prepare($query);
+    $stmt->execute();
+
+    return $stmt->fetch(PDO::FETCH_ASSOC);
   }
 }

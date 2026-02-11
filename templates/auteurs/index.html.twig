@@ -1,0 +1,43 @@
+{% extends "base.html.twig" %}
+
+{% block title %}Auteurs
+{% endblock %}
+
+{% block stylesheet %}
+	<link
+		rel="stylesheet"
+		href="/assets/css/output.css">
+{% endblock %}
+
+{% block body %}
+	{% include "components/navbar.html.twig" %}
+
+	<main
+		class="w-8/10 m-auto">
+		<a
+			href="/auteurs/add">
+			<button
+				class="boutton bg-teal-400 hover:bg-teal-600 m-7 mt-10 text-2xl">Ajouter
+			</button>
+		</a>
+		<div
+			class="grid grid-cols-3 gap-20 w-full">
+			{% for auteur in data %}
+				<a
+					href="/auteurs/{{auteur.id}}">
+					<article
+						class="card">
+						{{ auteur.biographie|raw }}
+					</article>
+				</a>
+			{% endfor %}
+		</div>
+	</main>
+	<div>
+		{% for i in 1..page %}
+			<a
+				href="/auteurs?page={{i}}">{{i}}
+			</a>
+		{% endfor %}
+	</div>
+{% endblock %}

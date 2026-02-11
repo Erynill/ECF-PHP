@@ -1,0 +1,80 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheet %}
+	<link
+		rel="stylesheet"
+		href="/assets/css/output.css"/>
+{% endblock %}
+
+{% block title %}Modifier -
+	{{data.prenom}}
+	{{data.nom}}
+{% endblock %}
+
+{% block body %}
+	{% include "components/navbar.html.twig" %}
+	<main
+		class="w-8/10 m-auto mt-5 bg-white rounded-2xl shadow-2xl shadow-emerald-700 p-5 relative">
+		<h2
+			class="text-center text-5xl font-bold mb-8">
+			Modifier
+			{{data.prenom}}
+			{{data.nom}}
+		</h2>
+		<form
+			action="/auteurs/modify/{{data.id}}"
+			method="post"
+			class="bg-white flex flex-col w-2/3 m-auto gap-5">
+			<div
+				class="flex flex-col gap-1">
+				<label
+					for="prenom"
+					class="text-2xl">
+					Prénom
+				</label>
+				<input
+					type="text"
+					id="prenom"
+					name="prenom"
+					class="input"
+					required
+					value="{{data.prenom}}">
+			</div>
+			<div
+				class="flex flex-col gap-1">
+				<label
+					for="nom"
+					class="text-2xl">
+					Nom
+				</label>
+				<input
+					type="text"
+					id="nom"
+					name="nom"
+					class="input"
+					required
+					value="{{data.nom}}">
+			</div>
+			<div
+				class="flex flex-col gap-1">
+				<label
+					for="biographie"
+					class="text-2xl">
+					Biographie
+				</label>
+				<textarea
+					name="biographie"
+					id="biographie"
+					class="input"
+					rows="10"
+					required>{{data.biographie}}
+				</textarea>
+			</div>
+			<button
+				type="submit"
+				class="boutton text-3xl bg-amber-400 hover:bg-amber-500 absolute top-5 right-5">
+				Modifier
+			</button>
+		</form>
+	</main>
+{% endblock %}

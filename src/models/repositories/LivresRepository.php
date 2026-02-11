@@ -15,9 +15,9 @@ class LivresRepository extends BaseRepository
     return $this->createBase("livres", $data);
   }
 
-  public function getAll(): array
+  public function getAll(?int $page = null, ?int $nbrArticle = null): array
   {
-    return $this->getAllBase("livres", Livres::class);
+    return $this->getAllBase("livres", Livres::class, $page, $nbrArticle);
   }
 
   public function getById(int $id): ?Livres
@@ -33,6 +33,11 @@ class LivresRepository extends BaseRepository
   public function deleteById(int $id): bool
   {
     return $this->deleteByIdBase("livres", $id);
+  }
+
+  public function getCount(): array
+  {
+    return $this->getCountBase("livres");
   }
 
   public function getAllOfLivreViewByPage(int $page, int $nbrArticle): array
@@ -191,14 +196,5 @@ class LivresRepository extends BaseRepository
     }
 
     return $arrayResult;
-  }
-
-  public function getCount(): array
-  {
-    $query = "SELECT COUNT(id) FROM livres";
-    $stmt = $this->db->prepare($query);
-    $stmt->execute();
-
-    return $stmt->fetch(PDO::FETCH_ASSOC);
   }
 }

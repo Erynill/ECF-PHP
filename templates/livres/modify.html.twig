@@ -21,7 +21,7 @@
 			{{data.livres.titre}}
 		</h2>
 		<form
-			action="/livres/{{data.livres.id}}/modify"
+			action="/livres/modify/{{data.livres.id}}"
 			method="post"
 			class="bg-white flex flex-col w-2/3 m-auto gap-5">
 			<div
@@ -36,6 +36,7 @@
 					id="titre"
 					name="titre"
 					class="input"
+					required
 					value="{{data.livres.titre}}">
 			</div>
 			<div
@@ -50,6 +51,7 @@
 					id="annee_publication"
 					name="annee_publication"
 					class="input"
+					required
 					value="{{data.livres.annee_publication}}">
 			</div>
 			<div
@@ -64,6 +66,7 @@
 					id="isbn"
 					name="isbn"
 					class="input"
+					required
 					value="{{data.livres.isbn}}">
 			</div>
 			<div
@@ -111,7 +114,8 @@
 					name="synopsis"
 					id="synopsis"
 					class="input"
-					rows="8">{{data.livres.synopsis}}
+					rows="8"
+					required>{{data.livres.synopsis}}
 				</textarea>
 			</div>
 			<button
