@@ -1,2 +1,4 @@
 .env
 /vendor/
+*.md
+/node_modules/
