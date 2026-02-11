@@ -5,7 +5,6 @@ $router = new AltoRouter();
 
 $router->map("GET", "/", "App\\controllers\\HomeController#index");
 $router->map("GET", "/livres", "App\\controllers\\LivresController#index");
-$router->map("GET", "/livres?page=[i]", "App\\controllers\\LivresController#index");
 $router->map("GET", "/livres/[i:id]", function ($id) {
   $obj = new App\controllers\LivresController;
   call_user_func([$obj, "livres"], $id);
@@ -14,6 +13,8 @@ $router->map("GET|POST", "/livres/[i:id]/modify", function ($id) {
   $obj = new App\controllers\LivresController;
   call_user_func([$obj, "modify"], $id);
 });
+$router->map("GET|POST", "/livres/add", "App\\controllers\\LivresController#add");
+$router->map("GET", "/livres/delete", "App\\controllers\\LivresController#delete");
 
 $match = $router->match();
 

@@ -61,19 +61,19 @@ abstract class BaseRepository
     $arrayObject = $data->getProps();
     $arrayObject = array_filter($arrayObject, fn($value) => !is_null($value) && $value !== "");
     foreach ($arrayObject as $key => $value) {
-      $query .= "$key = :$key";
+      $query .= "`$key` = :$key";
       if (array_key_last($arrayObject) !== $key) {
         $query .= ", ";
       }
     }
-    $query .= " WHERE id = :id";
+    $id = $arrayObject["id"];
+    $query .= " WHERE id = $id";
 
     $stmt = $this->db->prepare($query);
 
     foreach ($arrayObject as $key => $value) {
       $stmt->bindValue($key, $value);
     }
-    $stmt->bindValue("id", $arrayObject["id"]);
 
     return $stmt->execute();
   }

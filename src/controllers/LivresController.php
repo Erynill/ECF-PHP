@@ -4,6 +4,8 @@ declare (strict_types = 1);
 namespace App\controllers;
 
 use App\models\entities\Livres;
+use App\models\repositories\AuteursRepository;
+use App\models\repositories\CategoriesRepository;
 use App\models\repositories\LivresRepository;
 use Michelf\MarkdownExtra;
 
@@ -61,10 +63,68 @@ class LivresController extends BaseController
     $data = $this->getLivres(intval($id));
 
     if (isset($_POST["titre"])) {
-      var_dump($_POST);
+      $data["livres"]->setTitre($_POST["titre"]);
+      $data["livres"]->setAnnee_publication(intval($_POST["annee_publication"]));
+      $data["livres"]->setIsbn($_POST["isbn"]);
+      $data["livres"]->setDisponible(boolval($_POST["disponible"]));
+      $data["livres"]->setSynopsis($_POST["synopsis"]);
+
+      $result = LivresController::getRepo()->updateById($data["livres"]);
+
+      if ($result) {
+        header("Location: /livres/" . $data["livres"]->getId());
+      } else {
+        echo "Update échoué";
+      }
     }
 
     echo $this->twig->render("livres/modify.html.twig", [
+      "data" => $data,
+    ]);
+  }
+
+  public function delete()
+  {
+    if (isset($_GET["id"])) {
+      $result = LivresController::getRepo()->deleteById(intval($_GET["id"]));
+
+      if ($result) {
+        header("Location: /livres");
+      }
+    } else {
+      $id = $_GET["id"];
+      header("Location: /livres/$id");
+    }
+  }
+
+  public function add(): void
+  {
+    if (isset($_POST["titre"])) {
+      $livre = new Livres();
+      $livre->setTitre($_POST["titre"])
+        ->setAuteur_id(intval($_POST["auteur"]))
+        ->setCategorie_id(intval($_POST["categorie"]))
+        ->setAnnee_publication(intval($_POST["annee_publication"]))
+        ->setIsbn($_POST["isbn"])
+        ->setDisponible(boolval($_POST["disponible"]))
+        ->setSynopsis($_POST["synopsis"]);
+
+      $result = LivresController::getRepo()->create($livre);
+
+      if ($result) {
+        header("Location: /livres");
+      } else {
+        echo "Ajout échoué";
+      }
+    }
+
+    $auteursRepo = new AuteursRepository();
+    $categoriesRepo = new CategoriesRepository();
+
+    $data["auteurs"] = $auteursRepo->getAll();
+    $data["categories"] = $categoriesRepo->getAll();
+
+    echo $this->twig->render("livres/add.html.twig", [
       "data" => $data,
     ]);
   }
@@ -77,10 +137,6 @@ class LivresController extends BaseController
     echo $this->twig->render("livres/livres.html.twig", [
       "data" => $data,
     ]);
-
-    echo "<pre>";
-    var_dump($data);
-    echo "</pre";
   }
 
   public function index(): void

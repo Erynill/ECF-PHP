@@ -12,32 +12,41 @@
 {% block body %}
 	{% include "components/navbar.html.twig" %}
 	<main
-		class="w-8/10 m-auto grid grid-cols-3 my-10 gap-20">
-		{% for value in data %}
-			<a
-				href="/livres/{{value.livres.id}}">
-				<article
-					class="card">
-					{{ value.livres.synopsis|raw }}
-					<div
-						class="flex mt-auto">
-						<h3
-							class="text-2xl font-semibold">
-							{{value.auteurs.prenom}}
-							{{value.auteurs.nom}}
-						</h3>
+		class="w-8/10 m-auto">
+		<a
+			href="/livres/add">
+			<button
+				class="boutton bg-teal-400 hover:bg-teal-600 m-7 mt-10 text-2xl">Ajouter
+			</button>
+		</a>
+		<div
+			class="grid grid-cols-3 gap-20 w-full">
+			{% for value in data %}
+				<a
+					href="/livres/{{value.livres.id}}">
+					<article
+						class="card">
+						{{ value.livres.synopsis|raw }}
+						<div
+							class="flex mt-auto">
+							<h3
+								class="text-2xl font-semibold">
+								{{value.auteurs.prenom}}
+								{{value.auteurs.nom}}
+							</h3>
+							<span
+								class="ml-auto text-xl italic">
+								{{value.livres.annee_publication}}
+							</span>
+						</div>
 						<span
-							class="ml-auto text-xl italic">
-							{{value.livres.annee_publication}}
+							class="italic">
+							{{value.categories.nom}}
 						</span>
-					</div>
-					<span
-						class="italic">
-						{{value.categories.nom}}
-					</span>
-				</article>
-			</a>
-		{% endfor %}
+					</article>
+				</a>
+			{% endfor %}
+		</div>
 
 	</main>
 	<div>

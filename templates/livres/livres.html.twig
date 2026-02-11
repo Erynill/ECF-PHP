@@ -54,18 +54,15 @@
 		<div
 			class="flex justify-end text-2xl mt-5 gap-5">
 			<a
-				href="/livres/{{data.livres.id}}/modify">
-				<button
-					id="modifyBtn"
-					class="boutton bg-amber-400 hover:bg-amber-500">
-					Modifier
-				</button>
+				href="/livres/{{data.livres.id}}/modify"
+				class="boutton bg-amber-400 hover:bg-amber-500">Modifier
 			</a>
-			<button
+			<a
+				href="/livres/delete?id={{data.livres.id}}"
 				id="supprBtn"
-				class="bg-red-500 p-2 px-5 rounded-2xl shadow-lg shadow-black/50 cursor-pointer transition duration-200 hover:bg-red-700 hover:text-white hover:scale-110">
-				Supprimer
-			</button>
+				class="boutton bg-red-500 hover:bg-red-700"
+				data-id="{{data.livres.id}}">Supprimer
+			</a>
 		</div>
 	</main>
 {% endblock %}

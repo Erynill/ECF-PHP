@@ -1,8 +1,6 @@
 {% extends "base.html.twig" %}
 
-{% block title %}
-	Modifier -
-	{{data.livres.titre}}
+{% block title %}Livres
 {% endblock %}
 
 {% block stylesheet %}
@@ -17,11 +15,10 @@
 		class="w-8/10 m-auto mt-5 bg-white rounded-2xl shadow-2xl shadow-emerald-700 p-5 relative">
 		<h2
 			class="text-center text-5xl font-bold mb-8">
-			Modifier
-			{{data.livres.titre}}
+			Ajouter un livre
 		</h2>
 		<form
-			action="/livres/{{data.livres.id}}/modify"
+			action="/livres/add"
 			method="post"
 			class="bg-white flex flex-col w-2/3 m-auto gap-5">
 			<div
@@ -36,7 +33,58 @@
 					id="titre"
 					name="titre"
 					class="input"
-					value="{{data.livres.titre}}">
+					required>
+			</div>
+			<div
+				class="flex flex-col gap-1">
+				<label
+					for="auteur"
+					class="text-2xl">
+					Auteur
+				</label>
+				<select
+					name="auteur"
+					id="auteur"
+					class="input"
+					required>
+					<option
+						value=""
+						disabled
+						selected
+						hidden>--Choisissez l'auteur--
+					</option>
+					{% for auteur in data.auteurs %}
+						<option
+							value="{{auteur.id}}">{{auteur.prenom}}
+							{{auteur.nom}}
+						</option>
+					{% endfor %}
+				</select>
+			</div>
+			<div
+				class="flex flex-col gap-1">
+				<label
+					for="categorie"
+					class="text-2xl">
+					Catégorie
+				</label>
+				<select
+					name="categorie"
+					id="categorie"
+					class="input"
+					required>
+					<option
+						value=""
+						disabled
+						selected
+						hidden>--Choisissez la catégorie--
+					</option>
+					{% for categorie in data.categories %}
+						<option
+							value="{{categorie.id}}">{{categorie.nom}}
+						</option>
+					{% endfor %}
+				</select>
 			</div>
 			<div
 				class="flex flex-col gap-1">
@@ -50,7 +98,7 @@
 					id="annee_publication"
 					name="annee_publication"
 					class="input"
-					value="{{data.livres.annee_publication}}">
+					required>
 			</div>
 			<div
 				class="flex flex-col gap-1">
@@ -64,7 +112,7 @@
 					id="isbn"
 					name="isbn"
 					class="input"
-					value="{{data.livres.isbn}}">
+					required>
 			</div>
 			<div
 				class="flex flex-col gap-1">
@@ -78,8 +126,7 @@
 						name="disponible"
 						value="1"
 						class="ml-5"
-						{% if data.livres.disponible %} checked
-						{% endif %}>
+						checked>
 					<label
 						for="true"
 						class="text-2xl">
@@ -90,9 +137,7 @@
 						id="false"
 						name="disponible"
 						value="0"
-						class="ml-5"
-						{% if not data.livres.disponible %} checked
-						{% endif %}>
+						class="ml-5">
 					<label
 						for="false"
 						class="text-2xl">
@@ -111,13 +156,13 @@
 					name="synopsis"
 					id="synopsis"
 					class="input"
-					rows="8">{{data.livres.synopsis}}
-				</textarea>
+					rows="8"
+					required></textarea>
 			</div>
 			<button
 				type="submit"
-				class="boutton text-3xl bg-amber-400 hover:bg-amber-500 absolute top-5 right-5">
-				Modifier
+				class="boutton text-3xl bg-teal-400 hover:bg-teal-600 absolute top-5 right-5">
+				Ajouter
 			</button>
 		</form>
 	</main>
