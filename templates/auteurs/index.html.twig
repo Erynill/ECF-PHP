@@ -14,14 +14,17 @@
 
 	<main
 		class="w-8/10 m-auto">
-		<a
-			href="/auteurs/add">
-			<button
-				class="boutton bg-teal-400 hover:bg-teal-600 m-7 mt-10 text-2xl">Ajouter
-			</button>
-		</a>
+		{% if role == "admin"%}
+			<a
+				href="/auteurs/add">
+				<button
+					class="boutton bg-teal-400 hover:bg-teal-600 m-7 mt-10 text-2xl">Ajouter
+				</button>
+			</a>
+		{% endif %}
+
 		<div
-			class="grid grid-cols-3 gap-20 w-full">
+			class="grid grid-cols-3 gap-20 w-full mt-10">
 			{% for auteur in data %}
 				<a
 					href="/auteurs/{{auteur.id}}">
@@ -32,12 +35,48 @@
 				</a>
 			{% endfor %}
 		</div>
+		<div
+			class="flex justify-center w-full my-10">
+			{% if paginator.numPages > 1 %}
+				<ul
+					class="flex">
+					{% if paginator.prevUrl %}
+						<li>
+							<a
+								class="bg-white p-2 border"
+								href="{{ paginator.prevUrl }}">&laquo; Previous
+							</a>
+						</li>
+					{% endif %}
+
+					{% for page in paginator.pages %}
+						{% if page.url %}
+							<li
+								{{ page.isCurrent ? 'class="active"' : '' }}>
+								<a
+									class="bg-white p-2 border"
+									href="{{ page.url }}">{{ page.num }}
+								</a>
+							</li>
+						{% else %}
+							<li
+								class="disabled">
+								<span>{{ page.num }}
+								</span>
+							</li>
+						{% endif %}
+					{% endfor %}
+
+					{% if paginator.nextUrl %}
+						<li>
+							<a
+								class="bg-white p-2 border"
+								href="{{ paginator.nextUrl }}">Next &raquo;
+							</a>
+						</li>
+					{% endif %}
+				</ul>
+			{% endif %}
+		</div>
 	</main>
-	<div>
-		{% for i in 1..page %}
-			<a
-				href="/auteurs?page={{i}}">{{i}}
-			</a>
-		{% endfor %}
-	</div>
 {% endblock %}

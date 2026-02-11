@@ -9,22 +9,35 @@
 		</a>
 		<ul
 			class="flex w-full gap-5 text-2xl">
-			<li>
-				<a
-					href="/livres">Livres
-				</a>
-			</li>
-			<li>
-				<a
-					href="/auteurs">Auteurs
-				</a>
-			</li>
-			<li
-				class="ml-auto">
-				<a
-					href="">Se connecter
-				</a>
-			</li>
+			{% if login %}
+				<li>
+					<a
+						href="/livres">Livres
+					</a>
+				</li>
+				<li>
+					<a
+						href="/auteurs">Auteurs
+					</a>
+				</li>
+			{% endif %}
+
+			{% if login %}
+				<li
+					class="ml-auto">
+					<a
+						href="/logout">Se déconnecter
+					</a>
+				</li>
+			{% else %}
+				<li
+					class="ml-auto">
+					<a
+						href="/login">Se connecter
+					</a>
+				</li>
+			{% endif %}
+
 		</ul>
 	</nav>
 </header>

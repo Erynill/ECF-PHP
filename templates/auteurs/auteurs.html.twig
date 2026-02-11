@@ -21,18 +21,21 @@
 		class="w-8/10 m-auto bg-white flex flex-col gap-7 p-5 rounded-2xl mt-10 shadow-2xl shadow-emerald-700 ring
 			ring-emerald-700/30 livre">
 		{{ data.biographie|raw }}
-		<div
-			class="flex justify-end text-2xl mt-5 gap-5">
-			<a
-				href="/auteurs/modify/{{data.id}}"
-				class="boutton bg-amber-400 hover:bg-amber-500">Modifier
-			</a>
-			<a
-				href="/auteurs/delete?id={{data.id}}"
-				id="supprBtn"
-				class="boutton bg-red-500 hover:bg-red-700"
-				data-id="{{data.id}}">Supprimer
-			</a>
-		</div>
+		{% if role == "admin" %}
+			<div
+				class="flex justify-end text-2xl mt-5 gap-5">
+				<a
+					href="/auteurs/modify/{{data.id}}"
+					class="boutton bg-amber-400 hover:bg-amber-500">Modifier
+				</a>
+				<a
+					href="/auteurs/delete?id={{data.id}}"
+					id="supprBtn"
+					class="boutton bg-red-500 hover:bg-red-700"
+					data-id="{{data.id}}">Supprimer
+				</a>
+			</div>
+		{% endif %}
+
 	</main>
 {% endblock %}

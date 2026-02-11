@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html
+	lang="fr">
+	<head>
+		<meta
+			charset="UTF-8">
+		<meta
+			name="viewport"
+			content="width=device-width, initial-scale=1.0">
+		<link
+			rel="stylesheet"
+			href="/assets/css/output.css">
+		<title>Se connecter
+		</title>
+	</head>
+	<body
+		class="flex items-center h-lvh">
+		<form
+			action="/login"
+			method="post"
+			class="bg-white flex flex-col w-1/2 m-auto gap-5">
+			<div
+				class="flex flex-col gap-1">
+				<label
+					for="username"
+					class="text-2xl">
+					Nom d'utilisateur
+				</label>
+				<input
+					type="text"
+					id="username"
+					name="username"
+					class="input"
+					required>
+			</div>
+			<div
+				class="flex flex-col gap-1">
+				<label
+					for="password"
+					class="text-2xl">
+					Mot de passe
+				</label>
+				<input
+					type="password"
+					id="password"
+					name="password"
+					class="input"
+					required>
+			</div>
+			<button
+				type="submit"
+				class="boutton text-3xl bg-teal-400 hover:bg-teal-600 w-1/2 ml-auto">
+				Se connecter
+			</button>
+		</form>
+	</body>
+</html>

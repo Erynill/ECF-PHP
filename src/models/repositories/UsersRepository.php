@@ -36,4 +36,14 @@ class UsersRepository extends BaseRepository
   {
     return $this->getCountBase("users");
   }
+
+  public function getByUsername(string $username): Users | bool
+  {
+    $query = "SELECT * FROM users WHERE username = :username";
+    $stmt = $this->db->prepare($query);
+    $stmt->bindValue("username", $username);
+    $stmt->execute();
+
+    return $stmt->fetchObject(Users::class);
+  }
 }

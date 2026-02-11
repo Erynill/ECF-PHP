@@ -26,6 +26,8 @@ $router->map("GET|POST", "/auteurs/modify/[i:id]", function ($id) {
 });
 $router->map("GET|POST", "/auteurs/add", "App\\controllers\\AuteursController#add");
 $router->map("GET", "/auteurs/delete", "App\\controllers\\AuteursController#delete");
+$router->map("GET|POST", "/login", "App\\controllers\\LoginController#index");
+$router->map("GET", "/logout", "App\\controllers\\LoginController#logout");
 
 $match = $router->match();
 

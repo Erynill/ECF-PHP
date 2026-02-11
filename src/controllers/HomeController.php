@@ -7,6 +7,12 @@ class HomeController extends BaseController
 {
   public function index()
   {
-    echo $this->twig->render("home/index.html.twig");
+    if (isset($_SESSION["user"])) {
+      $this->setLogin(true);
+    }
+
+    echo $this->twig->render("home/index.html.twig", [
+      "login" => $this->getLogin(),
+    ]);
   }
 }

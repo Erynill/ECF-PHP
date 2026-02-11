@@ -7,6 +7,7 @@ use App\models\entities\Livres;
 use App\models\repositories\AuteursRepository;
 use App\models\repositories\CategoriesRepository;
 use App\models\repositories\LivresRepository;
+use JasonGrimes\Paginator;
 use Michelf\MarkdownExtra;
 
 class LivresController extends BaseController
@@ -51,15 +52,18 @@ class LivresController extends BaseController
     return $data;
   }
 
-  public function pagination(int $total): float
+  public function pagination(int $total, int $currentPage, ): object
   {
-    $totalPages = ceil($total / LivresController::NBR_ARTICLES);
+    $paginator = new Paginator($total, LivresController::NBR_ARTICLES, $currentPage, "/livres?page=(:num)");
 
-    return $totalPages;
+    return $paginator;
   }
 
   public function modify(string $id): void
   {
+    $this->checkSession();
+    $this->checkRole();
+
     $data = $this->getLivres(intval($id));
 
     if (isset($_POST["titre"])) {
@@ -80,11 +84,15 @@ class LivresController extends BaseController
 
     echo $this->twig->render("livres/modify.html.twig", [
       "data" => $data,
+      "login" => $this->getLogin(),
     ]);
   }
 
   public function delete()
   {
+    $this->checkSession();
+    $this->checkRole();
+
     if (isset($_GET["id"])) {
       $result = LivresController::getRepo()->deleteById(intval($_GET["id"]));
 
@@ -99,6 +107,9 @@ class LivresController extends BaseController
 
   public function add(): void
   {
+    $this->checkSession();
+    $this->checkRole();
+
     if (isset($_POST["titre"])) {
       $livre = new Livres();
       $livre->setTitre($_POST["titre"])
@@ -126,31 +137,41 @@ class LivresController extends BaseController
 
     echo $this->twig->render("livres/add.html.twig", [
       "data" => $data,
+      "login" => $this->getLogin(),
     ]);
   }
 
   public function livres(string $id): void
   {
+    $this->checkSession();
+
     $data = $this->getLivres(intval($id));
     $data = $this->processDataOneLivres($data);
 
     echo $this->twig->render("livres/livres.html.twig", [
       "data" => $data,
+      "login" => $this->getLogin(),
+      "role" => $_SESSION["role"],
     ]);
   }
 
   public function index(): void
   {
+    $this->checkSession();
+
     isset($_GET["page"]) ? $currentPage = $_GET["page"] : $currentPage = 1;
 
     $data = $this->getAllLivres(intval($currentPage));
     $data = $this->processDataAllLivres($data);
 
-    $totalPages = $this->pagination($this->getCount());
+    $total = $this->getCount();
+    $paginator = $this->pagination($total, intval($currentPage));
 
     echo $this->twig->render("livres/index.html.twig", [
       "data" => $data,
-      "page" => $totalPages,
+      "paginator" => $paginator,
+      "login" => $this->getLogin(),
+      "role" => $_SESSION["role"],
     ]);
   }
 }

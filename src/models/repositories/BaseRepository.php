@@ -49,7 +49,7 @@ abstract class BaseRepository
     return $stmt->fetchAll(PDO::FETCH_CLASS | PDO::FETCH_PROPS_LATE, $class);
   }
 
-  protected function getByIdBase(string $table, string $class, int $id): ?object
+  protected function getByIdBase(string $table, string $class, int $id): object | bool
   {
     $query = "SELECT * FROM $table WHERE id = :id";
     $stmt = $this->db->prepare($query);

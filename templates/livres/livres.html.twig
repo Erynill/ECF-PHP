@@ -51,18 +51,21 @@
 				class="ml-auto text-lg">{{ data.livres.isbn }}
 			</span>
 		</div>
-		<div
-			class="flex justify-end text-2xl mt-5 gap-5">
-			<a
-				href="/livres/modify/{{data.livres.id}}"
-				class="boutton bg-amber-400 hover:bg-amber-500">Modifier
-			</a>
-			<a
-				href="/livres/delete?id={{data.livres.id}}"
-				id="supprBtn"
-				class="boutton bg-red-500 hover:bg-red-700"
-				data-id="{{data.livres.id}}">Supprimer
-			</a>
-		</div>
+		{% if role == "admin" %}
+			<div
+				class="flex justify-end text-2xl mt-5 gap-5">
+				<a
+					href="/livres/modify/{{data.livres.id}}"
+					class="boutton bg-amber-400 hover:bg-amber-500">Modifier
+				</a>
+				<a
+					href="/livres/delete?id={{data.livres.id}}"
+					id="supprBtn"
+					class="boutton bg-red-500 hover:bg-red-700"
+					data-id="{{data.livres.id}}">Supprimer
+				</a>
+			</div>
+		{% endif %}
+
 	</main>
 {% endblock %}

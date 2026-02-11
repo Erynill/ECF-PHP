@@ -10,6 +10,7 @@ abstract class BaseController
 {
   protected FilesystemLoader $loader;
   protected Environment $twig;
+  protected bool $login = false;
 
   public function __construct()
   {
@@ -17,5 +18,43 @@ abstract class BaseController
     $this->twig = new Environment($this->loader, [
       "cache" => false,
     ]);
+  }
+
+  /**
+   * Get the value of login
+   */
+  public function getLogin(): bool
+  {
+    return $this->login;
+  }
+
+  /**
+   * Set the value of login
+   *
+   * @return  self
+   */
+  public function setLogin(bool $login): self
+  {
+    $this->login = $login;
+
+    return $this;
+  }
+
+  public function checkSession(): void
+  {
+    if (!isset($_SESSION["user"])) {
+      header("Location: /login");
+      exit();
+    } else {
+      $this->setLogin(true);
+    }
+  }
+
+  public function checkRole(): void
+  {
+    if ($_SESSION["role"] !== "admin") {
+      header("Location: /");
+      exit();
+    }
   }
 }

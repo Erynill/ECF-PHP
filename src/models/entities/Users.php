@@ -3,7 +3,7 @@ declare (strict_types = 1);
 
 namespace App\models\entities;
 
-use DateTime;
+use App\models\repositories\UsersRepository;
 use Exception;
 
 class Users
@@ -12,7 +12,7 @@ class Users
   private string $username = "";
   private string $password = "";
   private string $role = "";
-  private ?DateTime $created_at = null;
+  private ?string $created_at = null;
 
   /**
    * Get the value of id
@@ -69,7 +69,7 @@ class Users
    */
   public function setPassword(string $password): self
   {
-    $this->password = password_hash($password, PASSWORD_DEFAULT);
+    $this->password = $password;
 
     return $this;
   }
@@ -101,7 +101,7 @@ class Users
   /**
    * Get the value of created_at
    */
-  public function getCreated_at(): DateTime
+  public function getCreated_at(): string
   {
     return $this->created_at;
   }
@@ -111,7 +111,7 @@ class Users
    *
    * @return  self
    */
-  public function setCreated_at(DateTime $created_at): self
+  public function setCreated_at(string $created_at): self
   {
     $this->created_at = $created_at;
 
@@ -121,5 +121,20 @@ class Users
   public function getProps(): array
   {
     return get_object_vars($this);
+  }
+
+  public function checkAuth(): Users | bool
+  {
+    $userRepo = new UsersRepository();
+    $checkUser = $userRepo->getByUsername($this->getUsername());
+    if ($checkUser) {
+      if (password_verify($this->getPassword(), $checkUser->getPassword())) {
+        return $checkUser;
+      } else {
+        return false;
+      }
+    } else {
+      return false;
+    }
   }
 }
